@@ -23,14 +23,13 @@ class TrainReader:
     ```
     """
     ImageShape = tuple
-    OutputType = tuple
 
     def __init__(self, training_folder:str):
         self.dataset_dir = training_folder
         self.categories = os.listdir(self.dataset_dir)
 
 
-    def load(self, image_size:ImageShape, color_mode='rgb') -> OutputType:
+    def load(self, image_size:ImageShape, color_mode='rgb'):
         """
         Reads the directory and returns the images, resizing them as needed
 
