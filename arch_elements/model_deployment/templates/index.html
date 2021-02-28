@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+<head>
+<title>Architectural Elements Identifier</title>
+<style>
+/*html, body {
+    height: 100%;
+}
+*/
+body {
+  font-family: 'Roboto', sans-serif;
+  width: 80%;
+
+  background: #666666; 
+  margin: auto;
+  color: #fff;
+}
+div {
+    text-align: center;
+    margin: auto;
+    margin-top: 20px;
+}
+label {
+  color: #333;
+  font-size: 1.2rem;
+  margin: auto;
+  padding: 1rem 1rem;
+  border-radius: 0.2rem;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  width: 30%;
+  display: block;
+  border-bottom: 0.3rem solid transparent;
+}
+.form__group {
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+.narrow {
+  width:30%;
+}
+.error {
+  padding: 10px;
+  margin: 10px;
+  color: #ba3939;
+  background: #ffe0e0;
+  border: 1px solid #a33a3a;
+  border-radius: 0.2rem;
+  text-align: center;
+  text-align: -webkit-center;
+  text-align: -moz-center;
+}
+.info {
+  padding: 10px;
+  margin: 10px;
+  color: #4aa2c5;
+  background: #e0eaff;
+  border: 1px solid #3a5fa3;
+  border-radius: 0.2rem;
+  text-align: center;
+}
+.prediction {
+  padding: 10px;
+  margin: 10px;
+  color: #217208;
+  background: #ecffd6;
+  border: 1px solid #182c02;
+  border-radius: 0.2rem;
+  text-align: center;
+}
+footer {
+    clear: both;
+    position: relative;
+    border-top: 1px solid #272727;
+    height: 30px;
+    width: 80%;
+    font-size: large;
+    font-weight: bold;
+    background: #666666; 
+    margin: auto;
+    margin-top: 40px;
+    color: #fff;
+    text-align: center;
+}
+.feedback-wrapper {
+  width: 40%;
+}
+.feedback-table {
+  border: none;
+  border-spacing: 30px 0;
+  width: 100%;
+  padding: 10px;
+  margin: auto;
+  font-weight: bold;
+  table-layout: fixed;
+}
+select {
+  text-align: center;
+  text-align: -webkit-center;
+  text-align: -moz-center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.feedback-btn {
+  width: 80%;
+}
+td {
+  padding: 10px;
+}
+</style>
+<link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+</head>
+<body>
+    <div>
+        <a href="/"><img height="100" src="{{ url_for('static', filename='logo.png') }}"></a>
+    </div>
+<div>
+<h1>Architectural Elements Identifier</h1>
+<p>
+    Classify the architectural element of the image using AI. 
+</p>
+<div class="form__group">
+  <form method="post" action="/" enctype="multipart/form-data">
+          <input type="file" id="actual-btn" name="file" autocomplete="off" onchange="this.form.submit()" required hidden>
+          <label for="actual-btn">Choose image</label>
+  </form>
+</div>
+<p>
+	{% with messages = get_flashed_messages(with_categories=true) %}
+	  {% if messages %}
+    <div class="flashes narrow">
+      {% for category, message in messages %}
+        <p class="{{ category }}">{{ message }}</p>
+      {% endfor %}
+    </div>
+	  {% endif %}
+	{% endwith %}
+</p>
+</div>
+
+{% if other_categories %}
+  <div class=feedback-wrapper>
+    <form id="result_feedback" method="post" action="/feedback">
+    <table class="feedback-table">
+      <tr>
+        <td colspan="2">Help us improve. Is it correct? (Note: the image will be saved)</td>
+      </tr>
+      <tr>
+        <td>
+          <button form="result_feedback" id="prediction_ok" name="prediction_ok" type="submit" class="prediction feedback-btn" value="{{ predicted }}">Yes</button>
+        </td>
+        <td>
+        <select form="result_feedback" id="prediction_ko" class="error feedback-btn" name="prediction_ko" onchange="this.form.submit()">
+          <option value="" selected disabled>No</option>
+          {% for c in  other_categories %}
+          <option value="{{ c }}">{{ c }}</option>
+          {% endfor %}
+          <option value="other">None of those</option>
+       </select>
+       </td>
+      </tr>
+    </table>
+      <input type="hidden" id="image" name="image" value="{{ image }}">
+    </form>
+  </div>
+  {% endif %}
+  {% if image %}
+	<div>
+		<img height="600" src="data:image/png;base64,{{ image }}">
+	</div>
+{% endif %}
+<footer>
+    <h3><a href="http://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"></a> - 2021 - 8vi.cat</h3>
+</footer>
+</body>
+</html>
